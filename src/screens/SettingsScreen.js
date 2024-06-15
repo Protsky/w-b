@@ -22,21 +22,38 @@ const SettingsScreen = () => {
     fetchGliders();
   }, []);
 
+  // Render message when gliders array is empty
+  const renderEmptyListMessage = () => {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.header}>No Gliders Inserted</Text>
+        <Text style={styles.subtext}>Add a new glider using the form below.</Text>
+      </View>
+    );
+  };
+
+  // Render individual glider item
+  const renderItem = ({ item }) => (
+    <View style={styles.item}>
+      <Text>{item.name}</Text>
+      <Text>Empty Weight: {item.emptyWeight}</Text>
+      <Text>Aft Limit: {item.aftLimit}</Text>
+      <Text>Forward Limit: {item.forwardLimit}</Text>
+    </View>
+  );
+
   return (
     <View style={styles.container}>
       <Text style={styles.header}>List of Gliders</Text>
-      <FlatList
-        data={gliders}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <View style={styles.item}>
-            <Text>{item.name}</Text>
-            <Text>Empty Weight: {item.emptyWeight}</Text>
-            <Text>Aft Limit: {item.aftLimit}</Text>
-            <Text>Forward Limit: {item.forwardLimit}</Text>
-          </View>
-        )}
-      />
+      {gliders.length === 0 ? (
+        renderEmptyListMessage()
+      ) : (
+        <FlatList
+          data={gliders}
+          keyExtractor={(item) => item.id.toString()} // Assuming `id` is a unique identifier in your gliders array
+          renderItem={renderItem}
+        />
+      )}
     </View>
   );
 };
@@ -46,11 +63,18 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   header: {
     fontSize: 18,
     fontWeight: 'bold',
     marginBottom: 10,
+  },
+  subtext: {
+    fontSize: 16,
+    color: '#666',
+    marginTop: 10,
   },
   item: {
     backgroundColor: '#f9f9f9',
