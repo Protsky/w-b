@@ -12,7 +12,7 @@ const AddGliderScreen = () => {
       // Perform validation if needed
 
       // Assuming you have a backend API endpoint to handle Prisma operations
-      const response = await fetch('https://master-nu-red.vercel.app/addglider', {
+      const response = await fetch('https://master-nu-red.vercel.app/api/addglider', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
