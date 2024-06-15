@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { View, Text, FlatList, StyleSheet } from 'react-native';
-import axios from 'axios'; // Import Axios for HTTP requests
+import React, { useState, useEffect } from "react";
+import { View, Text, FlatList, StyleSheet } from "react-native";
+import axios from "axios"; // Import Axios for HTTP requests
 
-const SERVER_URL = 'https://master-nu-red.vercel.app/api/getGlider'; // Replace with your actual Vercel Function URL
+const SERVER_URL = "https://master-nu-red.vercel.app/api/getGlider"; // Replace with your actual Vercel Function URL
 
 const SettingsScreen = () => {
   const [gliders, setGliders] = useState([]);
@@ -13,7 +13,7 @@ const SettingsScreen = () => {
       const response = await axios.get(SERVER_URL);
       setGliders(response.data);
     } catch (error) {
-      console.error('Error fetching gliders:', error);
+      console.error("Error fetching gliders:", error);
     }
   };
 
@@ -27,7 +27,9 @@ const SettingsScreen = () => {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>No Gliders Inserted</Text>
-        <Text style={styles.subtext}>Add a new glider using the form below.</Text>
+        <Text style={styles.subtext}>
+          Add a new glider using the form below.
+        </Text>
       </View>
     );
   };
@@ -50,8 +52,15 @@ const SettingsScreen = () => {
       ) : (
         <FlatList
           data={gliders}
-          keyExtractor={(item) => item.id.toString()} // Assuming `id` is a unique identifier in your gliders array
-          renderItem={renderItem}
+          keyExtractor={(item) => item.id?.toString()} // Use optional chaining to avoid accessing undefined id
+          renderItem={({ item }) => (
+            <View style={styles.item}>
+              <Text>{item.name}</Text>
+              <Text>Empty Weight: {item.emptyWeight}</Text>
+              <Text>Aft Limit: {item.aftLimit}</Text>
+              <Text>Forward Limit: {item.forwardLimit}</Text>
+            </View>
+          )}
         />
       )}
     </View>
@@ -63,26 +72,26 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: 16,
     paddingTop: 20,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   header: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     marginBottom: 10,
   },
   subtext: {
     fontSize: 16,
-    color: '#666',
+    color: "#666",
     marginTop: 10,
   },
   item: {
-    backgroundColor: '#f9f9f9',
+    backgroundColor: "#f9f9f9",
     padding: 10,
     marginBottom: 10,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#ccc',
+    borderColor: "#ccc",
   },
 });
 
