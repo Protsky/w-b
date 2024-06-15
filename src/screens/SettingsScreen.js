@@ -26,16 +26,13 @@ const SettingsScreen = () => {
   }, []);
 
   // Render message when gliders array is empty
-  const renderEmptyListMessage = () => {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.header}>No Gliders Inserted</Text>
-        <Text style={styles.subtext}>
-          Add a new glider using the form below.
-        </Text>
-      </View>
-    );
-  };
+  const renderEmptyListMessage = () => (
+    <View style={styles.container}>
+      <Text style={styles.header}>No Gliders Available</Text>
+      <Text style={styles.subtext}>There are no gliders to display.</Text>
+    </View>
+  );
+  
 
   // Render individual glider item
   const renderItem = ({ item }) => (
@@ -65,9 +62,7 @@ const SettingsScreen = () => {
       ) : (
         <FlatList
           data={gliders}
-          keyExtractor={(item, index) =>
-            item.id ? item.id.toString() : index.toString()
-          }
+          keyExtractor={(item) => item.id.toString()}
           renderItem={renderItem}
         />
       )}
