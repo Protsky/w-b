@@ -1,21 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { StatusBar } from 'expo-status-bar';
+import { NavigationContainer } from '@react-navigation/native';
+import { createDrawerNavigator } from '@react-navigation/drawer';
+import SettingsScreen from './src/screens/SettingsScreen';
+import WbScreen from './src/screens/WbScreen';
+import Menu from './src/components/Menu';
 
-export default function App() {
+const Drawer = createDrawerNavigator();
+
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Welcome to your React Native app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Drawer.Navigator drawerContent={(props) => <Menu {...props} />}>
+        <Drawer.Screen name="Settings" component={SettingsScreen} />
+        <Drawer.Screen name="W&B" component={WbScreen} />
+      </Drawer.Navigator>
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App;
