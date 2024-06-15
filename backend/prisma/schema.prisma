@@ -1,0 +1,25 @@
+datasource db {
+  provider = "postgresql"
+  url      = "postgres://default:Es8bzSUuhF0x@ep-purple-sky-a4mne9zy.us-east-1.aws.neon.tech:5432/verceldb?sslmode=require"
+}
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Glider {
+  id           Int      @id @default(autoincrement())
+  name         String
+  emptyWeight  Float
+  aftLimit     Float
+  forwardLimit Float
+  masses       Mass[]
+}
+
+model Mass {
+  id        Int     @id @default(autoincrement())
+  name      String
+  weight    Float
+  distance  Float
+  gliderId  Int
+  glider    Glider  @relation(fields: [gliderId], references: [id])
+}
