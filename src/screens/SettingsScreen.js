@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, FlatList, StyleSheet } from 'react-native';
 import axios from 'axios'; // Import Axios for HTTP requests
 
-const SERVER_URL = 'https://your-vercel-app.vercel.app/api/getGlider'; // Replace with your actual Vercel Function URL
+const SERVER_URL = 'https://master-nu-red.vercel.app/api/getGlider'; // Replace with your actual Vercel Function URL
 
 const SettingsScreen = () => {
   const [gliders, setGliders] = useState([]);
