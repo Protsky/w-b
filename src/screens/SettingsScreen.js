@@ -1,71 +1,73 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, StyleSheet } from "react-native";
-import axios from "axios"; // Import Axios for HTTP requests
+import React, { useState } from 'react';
+import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
-const SERVER_URL = "https://master-nu-red.vercel.app/api/getGlider"; // Replace with your actual Vercel Function URL
+const AddGliderScreen = () => {
+  const [name, setName] = useState('');
+  const [emptyWeight, setEmptyWeight] = useState('');
+  const [aftLimit, setAftLimit] = useState('');
+  const [forwardLimit, setForwardLimit] = useState('');
 
-const SettingsScreen = () => {
-  const [gliders, setGliders] = useState([]);
-  const [isLoading, setIsLoading] = useState(true); // State to manage loading state
-
-  // Function to fetch gliders from the Vercel Function endpoint
-  const fetchGliders = async () => {
+  const handleAddGlider = async () => {
     try {
-      const response = await axios.get(SERVER_URL);
-      setGliders(response.data);
+      // Perform validation if needed
+
+      // Assuming you have a backend API endpoint to handle Prisma operations
+      const response = await fetch('https://master-nu-red.vercel.app/addGlider', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name,
+          emptyWeight: parseFloat(emptyWeight),
+          aftLimit: parseFloat(aftLimit),
+          forwardLimit: parseFloat(forwardLimit),
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to add glider');
+      }
+
+      // Handle success scenario (e.g., show success message, navigate back, etc.)
+      console.log('Glider added successfully!');
     } catch (error) {
-      console.error("Error fetching gliders:", error);
-    } finally {
-      setIsLoading(false); // Update loading state after fetching data
+      console.error('Error adding glider:', error);
+      // Handle error scenario (e.g., show error message)
     }
   };
 
-  // Load initial list of gliders when component mounts
-  useEffect(() => {
-    fetchGliders();
-  }, []);
-
-  // Render message when gliders array is empty
-  const renderEmptyListMessage = () => (
-    <View style={styles.container}>
-      <Text style={styles.header}>No Gliders Available</Text>
-      <Text style={styles.subtext}>There are no gliders to display.</Text>
-    </View>
-  );
-  
-
-  // Render individual glider item
-  const renderItem = ({ item }) => (
-    <View style={styles.item}>
-      <Text>{item.name}</Text>
-      <Text>Empty Weight: {item.emptyWeight}</Text>
-      <Text>Aft Limit: {item.aftLimit}</Text>
-      <Text>Forward Limit: {item.forwardLimit}</Text>
-    </View>
-  );
-
-  // Show loading indicator while fetching data
-  if (isLoading) {
-    return (
-      <View style={styles.container}>
-        <Text>Loading...</Text>
-      </View>
-    );
-  }
-
-  // Render content based on gliders array
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>List of Gliders</Text>
-      {gliders.length === 0 ? (
-        renderEmptyListMessage()
-      ) : (
-        <FlatList
-          data={gliders}
-          keyExtractor={(item) => item.id.toString()}
-          renderItem={renderItem}
-        />
-      )}
+      <Text style={styles.heading}>Add Glider</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Name"
+        value={name}
+        onChangeText={setName}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Empty Weight"
+        value={emptyWeight}
+        onChangeText={setEmptyWeight}
+        keyboardType="numeric"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Aft Limit"
+        value={aftLimit}
+        onChangeText={setAftLimit}
+        keyboardType="numeric"
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Forward Limit"
+        value={forwardLimit}
+        onChangeText={setForwardLimit}
+        keyboardType="numeric"
+      />
+      <Button title="Add Glider" onPress={handleAddGlider} />
     </View>
   );
 };
@@ -73,29 +75,23 @@ const SettingsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingHorizontal: 16,
-    paddingTop: 20,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingHorizontal: 20,
   },
-  header: {
-    fontSize: 18,
-    fontWeight: "bold",
-    marginBottom: 10,
+  heading: {
+    fontSize: 20,
+    marginBottom: 20,
   },
-  subtext: {
-    fontSize: 16,
-    color: "#666",
-    marginTop: 10,
-  },
-  item: {
-    backgroundColor: "#f9f9f9",
-    padding: 10,
-    marginBottom: 10,
-    borderRadius: 5,
+  input: {
+    width: '100%',
+    height: 40,
     borderWidth: 1,
-    borderColor: "#ccc",
+    borderColor: '#ccc',
+    borderRadius: 5,
+    paddingHorizontal: 10,
+    marginBottom: 10,
   },
 });
 
-export default SettingsScreen;
+export default AddGliderScreen;
